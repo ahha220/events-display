@@ -1,5 +1,8 @@
 'use client';
 
+// This JSX files helps with an additional component of filtering 
+// the events based on event type and helps user search up events 
+
 import { useState, useRef, useEffect } from "react";
 import { SlidersHorizontal, ArrowUpDown, Check } from "lucide-react";
 
@@ -10,9 +13,9 @@ const FILTER_OPTIONS = [
   { key: "tech_talk", label: "Tech Talks" },
 ];
 
-/**
- * FilterBar - search input + Filter dropdown + Sort dropdown.
- */
+
+ // FilterBar - function creates the search input bar & filter dropdown.
+
 export default function FilterBar({
   activeFilter,
   onFilterChange,
@@ -22,6 +25,8 @@ export default function FilterBar({
 }) {
   const [filterOpen, setFilterOpen] = useState(false);
   const filterRef = useRef(null);
+
+  // Event Listener to determine the type of filter applied
 
   useEffect(() => {
     function handleClick(e) {
@@ -38,7 +43,8 @@ export default function FilterBar({
 
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-      {/* Search input */}
+      {/* Search Input Feature -> Search input matches based on text in description, speaker, or event title 
+      ex: putting in hi will still show a bunch of events (because the text is included)*/}
       <div className="relative flex-1">
         <svg
           className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
@@ -61,7 +67,7 @@ export default function FilterBar({
       </div>
 
       <div className="flex items-center gap-2">
-        {/* Filter dropdown */}
+        {/* Filter dropdown -> Gives options of all events, workshops, activities, and tech talks, + shows how many of each*/}
         <div className="relative" ref={filterRef}>
           <button
             onClick={() => {

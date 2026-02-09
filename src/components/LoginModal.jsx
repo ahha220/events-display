@@ -1,13 +1,19 @@
 'use client';
 
+// This JSX file handles the the popup that appears when the hacker
+// chooses to login 
+
 import { useState, useEffect, useRef } from "react";
 import { useAuth } from "../context/AuthContext";
 import { X, Lock } from "lucide-react";
 
-/**
- * LoginModal - overlay modal for hacker authentication.
- * Uses hardcoded credentials (hacker / htn2026).
- */
+
+// LoginModal -  Modal for hacker authentication
+
+// CURRENT LOGIN IS HARD CODED:
+// username: hacker
+// password: htn2026
+
 export default function LoginModal({ onClose }) {
   const { login, loginError, clearError } = useAuth();
   const [username, setUsername] = useState("");

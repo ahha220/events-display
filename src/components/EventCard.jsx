@@ -2,9 +2,9 @@
 
 import { Calendar, Clock, Users, Lock } from "lucide-react";
 
-/**
- * Maps event types to colored badge styles.
- */
+
+// Maps event types to colored badge styles
+
 const EVENT_TYPE_STYLES = {
   workshop: {
     label: "Workshop",
@@ -26,7 +26,8 @@ const EVENT_TYPE_STYLES = {
   },
 };
 
-function formatDate(timestamp) {
+// Formatting time in the list of events
+function formatDate(timestamp){
   return new Date(timestamp).toLocaleDateString("en-US", {
     weekday: "short",
     month: "short",
@@ -50,11 +51,10 @@ function getDuration(start, end) {
   return remaining > 0 ? `${hours}h ${remaining}min` : `${hours}h`;
 }
 
-/**
- * EventCard - single-column card with type badge, date/time, speakers.
- * Subtle lift on hover.
- */
-export default function EventCard({ event, isLoggedIn, onClick }) {
+ // EventCard - Displays one event per row, and it will be displayed in a sorted order from first event to last 
+ // Will not show private events if not logged in
+ 
+export default function EventCard({ event, onClick }) {
   const style = EVENT_TYPE_STYLES[event.event_type] || EVENT_TYPE_STYLES.activity;
   const isPrivate = event.permission === "private";
 
@@ -64,27 +64,12 @@ export default function EventCard({ event, isLoggedIn, onClick }) {
       className="group flex w-full flex-col rounded-xl border border-border bg-card p-5 text-left transition-transform duration-200 ease-out hover:-translate-y-0.3 hover:shadow focus:outline-none focus:ring-2 focus:ring-ring/40"
       aria-label={`View details for ${event.name}`}
     >
-      {/* Type badge */}
-      <div className="mb-3 flex items-center justify-between">
-        <span
-          className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold ${style.bg} ${style.text} ${style.border}`}
-        >
-          {style.label}
-        </span>
-        {isPrivate && (
-          <span className="flex items-center gap-1 text-xs text-muted-foreground">
-            <Lock className="h-3 w-3" aria-hidden="true" />
-            Private
-          </span>
-        )}
-      </div>
-
       {/* Event name */}
       <h3 className="mb-2 text-base font-semibold text-foreground transition-colors group-hover:text-primary">
         {event.name}
       </h3>
 
-      {/* Description */}
+      {/* Event Description */}
       {event.description && (
         <p className="mb-4 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
           {event.description}
@@ -93,7 +78,7 @@ export default function EventCard({ event, isLoggedIn, onClick }) {
 
       <div className="mt-auto" />
 
-      {/* Meta info */}
+      {/* Time */ }
       <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
         <span className="flex items-center gap-1">
           <Calendar className="h-3.5 w-3.5" aria-hidden="true" />

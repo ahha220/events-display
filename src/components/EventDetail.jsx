@@ -32,6 +32,9 @@ const EVENT_TYPE_STYLES = {
   },
 };
 
+// Formatting time in when an event is clicked 
+// Next time put in a common function 
+
 function formatDate(timestamp) {
   return new Date(timestamp).toLocaleDateString("en-US", {
     weekday: "long",
@@ -59,10 +62,10 @@ function getDuration(start, end) {
     : `${hours} hour${hours > 1 ? "s" : ""}`;
 }
 
-/**
- * EventDetail - full-page view for a single event with
- * description, speakers, links, and related events.
- */
+
+ // EventDetail - Own state/page with the event displayed, description of event
+ // related events, and information on timing 
+
 export default function EventDetail({
   eventId,
   allEvents,
@@ -90,6 +93,7 @@ export default function EventDetail({
   const style = EVENT_TYPE_STYLES[event.event_type] || EVENT_TYPE_STYLES.activity;
   const isPrivate = event.permission === "private";
 
+  // FIND RELATED EVENTS FROM EVENTS LIST BASED ON THE CURRENT EVENT ID CLICKED 
   const relatedEvents = event.related_events
     .map((id) => allEvents.find((e) => e.id === id))
     .filter(Boolean)
@@ -97,14 +101,15 @@ export default function EventDetail({
 
   const eventUrl = isLoggedIn ? event.private_url : event.public_url;
 
+  // Styling of Page
   return (
     <div className="min-h-screen bg-background">
       {/* Top bar */}
-      <header className="border-b border-border bg-card">
-        <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-3 md:px-6"
+      <header className="border-b border-border bg-card"
           style = {{
             background: 'linear-gradient(to right, hsl(340, 80%, 95%), hsl(340, 80%, 90%), hsl(340, 80%, 85%))'
           }}>
+        <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-3 md:px-6">
           <button
             onClick={onBack}
             className="flex items-center gap-2 rounded-full border border-border bg-white px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-secondary"
@@ -125,28 +130,14 @@ export default function EventDetail({
 
       <main className="mx-auto max-w-4xl px-4 py-8 md:px-6">
         <article>
-          {/* Badges */}
-          <div className="mb-4 flex flex-wrap items-center gap-3">
-            <span
-              className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold ${style.bg} ${style.text} ${style.border}`}
-            >
-              {style.label}
-            </span>
-            {isPrivate && (
-              <span className="flex items-center gap-1 rounded-full border border-border px-3 py-1 text-xs text-muted-foreground">
-                <Lock className="h-3 w-3" aria-hidden="true" />
-                Private Event
-              </span>
-            )}
-          </div>
-
           {/* Title */}
           <h1 className="mb-6 text-3xl font-bold tracking-tight text-foreground md:text-4xl text-balance">
             {event.name}
           </h1>
 
-          {/* Date & time card */}
-          <div className="mb-6 rounded-xl border border-border bg-card p-5">
+          {/* Date & time card*/}
+          <div className="mb-6 rounded-xl border border-border bg-card p-5"
+            style = {{boxShadow: '5px 5px 1px rgba(0,0,0,0.1'}}>
             <div className="flex flex-wrap gap-6">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
@@ -186,7 +177,7 @@ export default function EventDetail({
             </div>
           </div>
 
-          {/* Description */}
+          {/* Description of Event */}
           {event.description && (
             <div className="mb-6">
               <h2 className="mb-3 text-lg font-semibold text-foreground">About</h2>
@@ -232,8 +223,7 @@ export default function EventDetail({
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
               >
-                <ExternalLink className="h-4 w-4" aria-hidden="true" />
-                {isLoggedIn ? "Open Private Link" : "Open Public Link"}
+                <ExternalLink className="h-4 w-4" aria-hidden="true" /> Open Link
               </a>
             </div>
           )}

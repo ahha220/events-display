@@ -21,18 +21,19 @@ export default function App() {
 
   const { data: events, error, isLoading } = useSWR(EVENTS_API, fetcher);
 
-  /**
-   * Count how many private events are hidden when logged out.
-   */
+  
+   // Count how many private events are hidden if the user is logged out
+   
   const hiddenCount = useMemo(() => {
     if (!events || isLoggedIn) return 0;
     return events.filter((e) => e.permission === "private").length;
   }, [events, isLoggedIn]);
 
-  /**
-   * Filter and sort events based on login state, type filter,
-   * search query, and sort direction.
-   */
+  
+  // Filter and sort events based on login state, type filter, search
+  // The original sort order is from the first occuring event to the last occuring event based on
+  // the time fetched in the API 
+  
   const filteredEvents = useMemo(() => {
     if (!events) return [];
 
@@ -45,17 +46,16 @@ export default function App() {
       result.sort((a, b) => b.start_time - a.start_time);
     }
 
-    // Permission filter - guests only see public events
+    // Permission filter -> this filters so hackers not logged in cannot see private events
     if (!isLoggedIn) {
       result = result.filter((event) => event.permission !== "private");
     }
 
-    // Type filter
     if (activeFilter !== "all") {
       result = result.filter((event) => event.event_type === activeFilter);
     }
 
-    // Search filter
+    // Search filter for the search bar
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase().trim();
       result = result.filter((event) => {
@@ -71,9 +71,9 @@ export default function App() {
     return result;
   }, [events, isLoggedIn, activeFilter, activeSort, searchQuery]);
 
-  /**
-   * Event counts for filter dropdown badges.
-   */
+  
+   // Event counts for filter dropdown badges
+  
   const eventCounts = useMemo(() => {
     if (!events) return { all: 0, workshop: 0, activity: 0, tech_talk: 0 };
 
@@ -89,7 +89,7 @@ export default function App() {
     };
   }, [events, isLoggedIn]);
 
-  // Event detail view
+  // Event detailed view
   if (selectedEventId && events) {
     return (
       <EventDetail
@@ -117,7 +117,7 @@ export default function App() {
           </p>
         </section>
 
-        {/* Search + Filter + Sort */}
+        {/* Search + Filter */}
         <section className="mb-6" aria-label="Event filters">
           <FilterBar
             activeFilter={activeFilter}
@@ -146,7 +146,7 @@ export default function App() {
           </div>
         )}
 
-        {/* Loading */}
+        {/* Loading screen */}
         {isLoading && (
           <div className="flex flex-col items-center justify-center py-20" role="status">
             <Loader2 className="h-8 w-8 animate-spin text-primary" aria-hidden="true" />
@@ -155,7 +155,7 @@ export default function App() {
           </div>
         )}
 
-        {/* Error */}
+        {/* Error screen */}
         {error && (
           <div className="flex flex-col items-center justify-center py-20" role="alert">
             <AlertCircle className="h-8 w-8 text-destructive" aria-hidden="true" />
@@ -165,7 +165,7 @@ export default function App() {
           </div>
         )}
 
-        {/* Event cards - single column */}
+        {/* List of events (one per row) */}
         {!isLoading && !error && (
           <section aria-label="Events list">
             {filteredEvents.length > 0 && (

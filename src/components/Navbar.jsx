@@ -1,27 +1,30 @@
 'use client';
 
+// This JSX file is the top bar of the application
+// ... plus hachiware in subsitute of the icon :D
+
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import LoginModal from "./LoginModal";
 import { LogIn, LogOut, Code2 } from "lucide-react";
 
-/**
- * Navbar - top header bar with Hackathon Global branding and login/logout button.
- */
+
+ // Navbar - gives top header bar with Hackathon Global and login/logout button
+
 export default function Navbar() {
   const { isLoggedIn, logout } = useAuth();
   const [showLogin, setShowLogin] = useState(false);
 
   return (
     <>
-      <header className="border-b border-border bg-gradient-to-r">
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 md:px-6"
-        style={{
+      <header className="border-b border-border bg-gradient-to-r"
+       style={{
         background: 'linear-gradient(to right, hsl(340, 80%, 95%), hsl(340, 80%, 90%), hsl(340, 80%, 85%))',
 
-      }}>          
+      }}>
+      <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 md:px-6">          
       
-      {/* Brand */}
+      {/* Title */}
           <a
             href="/"
             className="flex items-center gap-2"
@@ -43,7 +46,7 @@ export default function Navbar() {
             </div>
           </a>
 
-          {/* Auth button */}
+          {/* Login Button */}
           {isLoggedIn ? (
             <button
               onClick={logout}
